@@ -53,7 +53,7 @@ function Products() {
                         if (ar.some(product =>
                             product._id === id
                         )) {
-                            alert("checked in")
+                            // alert("checked in")
                         } else {
                             ar.push(res.data);
                             localStorage.setItem("mycart", JSON.stringify(ar));

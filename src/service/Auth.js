@@ -20,6 +20,8 @@ function isLoggedIn(){
 
 function doLogout(){
     localStorage.removeItem("_token");
+    localStorage.removeItem("mycart");
+    localStorage.removeItem("myproid");
     window.location = "/";
 }
 
