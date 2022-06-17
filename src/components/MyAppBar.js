@@ -2,10 +2,7 @@ import React from 'react'
 import { Box, AppBar, Toolbar, IconButton, Typography, Button, Badge } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useSelector } from 'react-redux';
-
-
 import { useNavigate } from 'react-router-dom'
-
 import { doLogout, isAdmin, isLoggedIn } from '../service/Auth';
 
 export const MyAppBar = () => {
