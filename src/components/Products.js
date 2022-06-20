@@ -1,16 +1,28 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { getProducts } from '../service/Product';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getProducts,getProductById,deleteProduct,searchProducts } from '../service/Product';
 import { useDispatch } from 'react-redux/es/exports';
 import { countProducts } from '../redux/Actions/ProductActions';
-import { getProductById } from '../service/Product';
+import { isAdmin } from '../service/Auth';
+import Pagination from './Pagination';
+import PageProducts from './PageProducts';
 
-
-function Products() {
+function Products(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
     const [proData, setProData] = useState([]);
+
+    useEffect(()=>{
+        searchProducts(location.search)
+        .then(res => {
+            if(res.data.err == 0){
+                setProData(res.data.prodata)
+            }
+        })
+    },[location.search])
+
     useEffect(() => {
         getProducts()
             .then(res => {
@@ -30,76 +42,30 @@ function Products() {
         }
     }, [])
 
-    const addcart = (id) => {
-        if (localStorage.getItem('myproid') != undefined) {
-            let array = JSON.parse(localStorage.getItem('myproid'));
 
-            array.push(id)
-            localStorage.setItem("myproid", JSON.stringify(array));
-            dispatch(countProducts(array.length))
-        }
-        else {
-            let array = [];
-            array.push(id);
-            localStorage.setItem('myproid', JSON.stringify(array));
-            dispatch(countProducts(array.length))
-        }
+    const [currentPage,setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(4);
 
-        getProductById(id)
-            .then(res => {
-                if (res) {
-                    if (localStorage.getItem('mycart') != undefined) {
-                        let ar = JSON.parse(localStorage.getItem('mycart'));
-                        if (ar.some(product =>
-                            product._id === id
-                        )) {
-                            // alert("checked in")
-                        } else {
-                            ar.push(res.data);
-                            localStorage.setItem("mycart", JSON.stringify(ar));
-                        }
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = proData.slice(indexOfFirstProduct,indexOfLastProduct)
 
-                    }
-                    else {
-                        let ar = [];
-                        ar.push(res.data)
-                        localStorage.setItem('mycart', JSON.stringify(ar));
-                    }
-                }
-            })
-    }
-
+    const paginate = pageNumber => setCurrentPage(pageNumber);
     return (
         <Container>
-            <h2>Products</h2>
+            <h4>Results</h4>
             <Box sx={{ flexGrow: 1, margin: "20px 0px" }}>
                 <Grid container spacing={3}>
-                    {proData?.map(pro =>
-                        <Grid item xs={3} key={pro._id} >
-                            <Card sx={{ maxWidth: 345 }} >
-                                <CardMedia
-                                    component="img"
-                                    alt={pro.name}
-                                    image={pro.imageURL}
-                                    height="250"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant='h5' sx={{ fontWeight: "bold", textAlign: "center" }}>
-                                        {pro.name}
-                                    </Typography>
-                                    <Typography variant="h6" color='text.secondary' sx={{ textAlign: "center" }}>
-                                        ₹{pro.price}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-                                    <Button variant="contained" size="small" onClick={() => navigate(`/product-details/${pro._id}`)}>Info</Button>
-                                    <Button variant="contained" size="small" onClick={() => addcart(pro._id)}>Add To Cart</Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    )}
+                    <PageProducts products={currentProducts}/>
                 </Grid>
             </Box>
+
+            <Pagination
+                productsPerPage={productsPerPage}
+                totalProducts={proData.length}
+                paginate={paginate}
+            >
+            </Pagination>
         </Container >
     )
 }

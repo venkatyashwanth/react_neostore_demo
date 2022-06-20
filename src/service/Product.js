@@ -9,11 +9,18 @@ function getProductById(id){
     return axios.get(`${MAIN_API}products/${id}`)
 }
 
+function searchProducts(ser){
+    return axios.get(`${MAIN_API}products/${ser}`)
+}
+
 function saveProducts(data){
     return axios.post(`${MAIN_API}products`,data)
 }
 
+function deleteProduct(id){
+    return axios.delete(`${MAIN_API}products/${id}`)
+}
 
 
 
-export {getProducts,getProductById, saveProducts};
+export {getProducts,getProductById, saveProducts,searchProducts, deleteProduct};
