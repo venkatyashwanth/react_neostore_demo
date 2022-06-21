@@ -8,14 +8,16 @@ import { getProducts,getProductById,deleteProduct,searchProducts } from '../serv
 import { useDispatch } from 'react-redux/es/exports';
 import { countProducts } from '../redux/Actions/ProductActions';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 
 
 
 
-const PageProducts = ({products}) => {
+const PageProducts = ({products, updateData}) => {
     const dispatch = useDispatch();
-    const [proData, setProData] = useState([]);
+
+
     const addcart = (id) => {
         if (localStorage.getItem('myproid') != undefined) {
             let array = JSON.parse(localStorage.getItem('myproid'));
@@ -55,14 +57,21 @@ const PageProducts = ({products}) => {
             })
     }
 
+
+
+    useEffect(()=>{
+        console.log('reloading')
+    },[products])
+
     const delPro = (id) =>{
         if(window.confirm("Delete?")){
             deleteProduct(id)
             .then(res => {
                 if(res.data){
                     alert("Product Deleted");
-                    let data = proData.filter(pro => pro._id != id);
-                    setProData(data);
+                    // let data = products.filter(pro => pro._id != id);
+                    // console.log(data)
+                    updateData();
                 }
             })
         }

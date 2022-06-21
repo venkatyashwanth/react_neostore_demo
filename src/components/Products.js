@@ -42,6 +42,14 @@ function Products(props) {
         }
     }, [])
 
+    const updateData = () => {
+        getProducts()
+            .then(res => {
+                if (res.data.err === 0) {
+                    setProData(res.data.prodata)
+                }
+            })
+    }
 
     const [currentPage,setCurrentPage] = useState(1);
     const [productsPerPage] = useState(4);
@@ -56,7 +64,7 @@ function Products(props) {
             <h4>Results</h4>
             <Box sx={{ flexGrow: 1, margin: "20px 0px" }}>
                 <Grid container spacing={3}>
-                    <PageProducts products={currentProducts}/>
+                    <PageProducts products={currentProducts} updateData={updateData}/>
                 </Grid>
             </Box>
 
