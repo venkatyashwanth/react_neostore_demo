@@ -58,11 +58,6 @@ const PageProducts = ({products, updateData}) => {
     }
 
 
-
-    useEffect(()=>{
-        console.log('reloading')
-    },[products])
-
     const delPro = (id) =>{
         if(window.confirm("Delete?")){
             deleteProduct(id)

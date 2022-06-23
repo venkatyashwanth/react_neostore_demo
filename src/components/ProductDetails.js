@@ -21,7 +21,7 @@ export const ProductDetails = () => {
             })
             .catch(err => console.log(err))
     }, [id])
-    
+
     const addcart = (id) => {
         if (localStorage.getItem('myproid') != undefined) {
             let array = JSON.parse(localStorage.getItem('myproid'));
@@ -61,32 +61,39 @@ export const ProductDetails = () => {
             })
     }
 
+    const editcart = (id) => {
+        navigate(`/edit/${id}`)
+    }
+
+
     return (
         <>
             <div style={{ display: "flex", justifyContent: "space-around", margin: "40px 40px" }}>
                 <div>
-                    <ul style={{ listStyleType: "none", fontSize: "24px",fontWeight:"bolder", maxWidth:"600px"}}>
+                    <ul style={{ listStyleType: "none", fontSize: "24px", fontWeight: "bolder", maxWidth: "600px" }}>
                         <li >
-                            Product Name: <span style={{fontSize: "20px", fontWeight:"light", color: "gray"}}>{product.name}</span>
+                            Product Name: <span style={{ fontSize: "20px", fontWeight: "light", color: "gray" }}>{product.name}</span>
                         </li>
                         <li>
-                            Price:<span style={{fontSize: "20px", fontWeight:"light", color: "gray"}}>₹{product.price}</span> 
+                            Price:<span style={{ fontSize: "20px", fontWeight: "light", color: "gray" }}>₹{product.price}</span>
                         </li>
                         <li>
-                            Category:<span style={{fontSize: "20px", fontWeight:"light", color: "gray"}}>{product.category}</span> 
+                            Category:<span style={{ fontSize: "20px", fontWeight: "light", color: "gray" }}>{product.category}</span>
                         </li>
                         <li>
-                            Description:<span style={{fontSize: "20px", fontWeight:"light", color: "gray"}}>{product.description}</span> 
+                            Description:<span style={{ fontSize: "20px", fontWeight: "light", color: "gray" }}>{product.description}</span>
                         </li>
                         <li>
-                            Manufacturer:<span style={{fontSize: "20px", fontWeight:"light", color: "gray"}}>{product.manufacturer}</span> 
+                            Manufacturer:<span style={{ fontSize: "20px", fontWeight: "light", color: "gray" }}>{product.manufacturer}</span>
                         </li>
                         <li>
-                            Available Items:<span style={{fontSize: "20px", fontWeight:"light", color: "gray"}}>{product.availableItems}</span> 
+                            Available Items:<span style={{ fontSize: "20px", fontWeight: "light", color: "gray" }}>{product.availableItems}</span>
                         </li>
                         <li>
                             <button className='btn btn-primary' onClick={() => addcart(product._id)}>Add to cart</button>
+                            <button className='btn btn-info m-2' onClick={() => editcart(product._id)}>Edit</button>
                             <button className='btn btn-warning m-2' onClick={() => navigate("/")}>Back</button>
+
                         </li>
                     </ul>
 

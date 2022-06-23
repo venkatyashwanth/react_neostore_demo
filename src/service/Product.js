@@ -17,10 +17,14 @@ function saveProducts(data){
     return axios.post(`${MAIN_API}products`,data)
 }
 
+function editProduct(id,data){
+    return axios.put(`${MAIN_API}products/${id}`,data)
+}
+
 function deleteProduct(id){
     return axios.delete(`${MAIN_API}products/${id}`)
 }
 
 
 
-export {getProducts,getProductById, saveProducts,searchProducts, deleteProduct};
+export {getProducts,getProductById, saveProducts,searchProducts,editProduct,deleteProduct};
